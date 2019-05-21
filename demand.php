@@ -7,42 +7,64 @@
     if(!isset($_SESSION["auth"])) {
         header('Location: ./index.php');
     }
-    
-    $sql_demand = 'INSERT INTO reprographie.demand (
-                                        date_demand ,
-                                        date_ready_print ,
-                                        nb_print ,
-                                        format_page ,
-                                        orientation ,
-                                        agrafage ,
-                                        commentaire
-                                        )
-            VALUES (:date_demand, :date_ready_print, :nb_print, :format_page, :orientation, :agrafage, :commentaire
+
+    if(isset($_POST['date_demand']) &&
+       isset($_POST['date_ready_print']) &&
+       isset($_POST['photocopies']) && 
+       isset($_POST['format']) &&
+       isset($_POST['orientation']) &&
+       isset($_POST['agrafage'])) {
+
+        $date_demand = $_POST['date_demand'];
+        $date_ready_print = $_POST['date_ready_print'];
+        $photocopies = $_POST['photocopies'];
+        $format = $_POST['format'];
+        $orientation = $_POST['orientation'];
+        $agrafage = $_POST['agrafage'];
+        $commentaire = $_POST['commentaire'];
+
+        if($agrafage == "yes") {
+            $agrafage = 1;
+        } else {
+            $agrafage = 0;
+        }
+
+        $sql_demand = 'INSERT INTO reprographie.demand (
+                                            date_demand ,
+                                            date_ready_print ,
+                                            nb_print ,
+                                            format_page ,
+                                            orientation ,
+                                            agrafage ,
+                                            commentaire
+                                            )
+                                VALUES (:date_demand, :date_ready_print, :nb_print, :format_page, :orientation, :agrafage, :commentaire
         );';
 
-    $sth_demand = $bdd->prepare($sql_demand);
+        $sth_demand = $bdd->prepare($sql_demand);
 
-    $request_demand = $sth_demand->execute(array(':date_demand' => '2019-05-21',
-                        ':date_ready_print' => "2019-05-22",
-                        ':nb_print' => 3,
-                        ':format_page' => "A3",
-                        ':orientation' => "Paysage",
-                        ':agrafage' => 1,
-                        ':commentaire' => "sds"));
-                        
-    
-    if(!$request_demand) {
-        $result = "oui";
+        $request_demand = $sth_demand->execute(array(':date_demand' => $date_demand,
+                                                    ':date_ready_print' => $date_ready_print,
+                                                    ':nb_print' => $photocopies,
+                                                    ':format_page' => $format,
+                                                    ':orientation' => $orientation,
+                                                    ':agrafage' => $agrafage,
+                                                    ':commentaire' => $commentaire));
+
+
+        if(!$request_demand) {
+            $result = "oui";
+        }
+
+        $id_demand = $bdd->lastInsertId();
+
+        $sql_demand = 'INSERT INTO reprographie.user_demand (id_user, id_demand) VALUES (:id_user, :id_demand);';
+
+        $sth_demand = $bdd->prepare($sql_demand);
+
+        $request_demand = $sth_demand->execute(array(':id_user' => $_SESSION["auth"]["id"], ':id_demand' => $id_demand));
+
     }
-
-    $id_demand = $bdd->lastInsertId();
-
-    $sql_demand = 'INSERT INTO reprographie.user_demand (id_user, id_demand)
-                    VALUES (:id_user, :id_demand);';
-
-    $sth_demand = $bdd->prepare($sql_demand);
-
-    $request_demand = $sth_demand->execute(array(':id_user' => $_SESSION["auth"]["id"], ':id_demand' => $id_demand));
 
 ?>
 
@@ -85,20 +107,33 @@
 
         <div class="form-group">
             <label for="format">Format</label>
-            <input type="text" class="form-control"  name="format" id="format" placeholder="A4">
+            <select name="format" class="form-control form-control-lg">>
+                <option value="A4">A4</option>
+                <option value="A3">A3</option>
+            </select>
         </div>
 
         <div class="form-group">
             <label for="orientation">Orientation</label>
-            <input type="text" class="form-control"  name="orientation" id="orientation" placeholder="Paysage">
+            <select name="orientation" class="form-control form-control-lg">>
+                <option value="Paysage">Paysage</option>
+                <option value="Portrait">Portrait</option>
+            </select>
         </div>
 
-        <div class="form-group">
-            <span>Photocopies</span>
-            <label for="yes_photocopies">Oui</label>
-            <input type="radio" class="form-control"  name="photocopies" id="yes_photocopies">
-            <label for="no_photocopies">Non</label>
-            <input type="radio" class="form-control"  name="photocopies" id="no_photocopies">
+        <span>Agrafage</span><br>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="agrafage" id="yes_agrafage" checked value="yes">
+            <label class="form-check-label" for="yes_agrafage">
+                Oui
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="agrafage"id="no_photocopies" value="no">
+            <label class="form-check-label" for="no_photocopies">
+                Non
+            </label>
         </div>
 
         <div class="form-group">

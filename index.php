@@ -14,7 +14,7 @@
 
         if(isset($user["id"])) {
             $_SESSION["auth"] = $user;
-            header('Location: ./home.php');
+            header('Location: ./demand.php');
         }
     }
 ?>
