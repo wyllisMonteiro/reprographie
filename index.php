@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require "bdd.php";
+    require "config/bdd.php";
 
     if(isset($_POST['email']) AND isset($_POST['pass'])) {
         $sql = 'SELECT *
@@ -27,15 +27,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        form{
-            width: 50%;
-            margin: 200px auto 0px auto;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
     <form action="" method="POST">
         <div class="form-group">
             <label for="email">Email address</label>

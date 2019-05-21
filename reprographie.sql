@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Lun 20 Mai 2019 à 15:16
+-- Généré le : Mar 21 Mai 2019 à 14:45
 -- Version du serveur: 5.5.8
 -- Version de PHP: 5.3.4
 
@@ -35,17 +35,14 @@ CREATE TABLE IF NOT EXISTS `demand` (
   `agrafage` int(11) NOT NULL,
   `commentaire` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=38 ;
 
 --
 -- Contenu de la table `demand`
 --
 
 INSERT INTO `demand` (`id`, `date_demand`, `date_ready_print`, `nb_print`, `format_page`, `orientation`, `agrafage`, `commentaire`) VALUES
-(1, '2019-05-21', '2019-05-22', 2, 'A4', 'Paysage', 1, 'Commentaires'),
-(2, '2019-05-21', '2019-05-22', 2, 'A3', 'Paysage', 1, 'sds'),
-(27, '2019-05-21', '2019-05-22', 3, 'A3', 'Paysage', 1, 'sds'),
-(28, '2019-05-21', '2019-05-22', 3, 'A3', 'Paysage', 1, 'sds');
+(1, '2019-05-21', '2019-05-22', 2, 'A4', 'Paysage', 1, 'Commentaires');
 
 -- --------------------------------------------------------
 
@@ -60,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` varchar(255) NOT NULL,
   `pass` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `user`
@@ -80,13 +77,11 @@ CREATE TABLE IF NOT EXISTS `user_demand` (
   `id_user` int(255) NOT NULL,
   `id_demand` int(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Contenu de la table `user_demand`
 --
 
 INSERT INTO `user_demand` (`id`, `id_user`, `id_demand`) VALUES
-(1, 1, 1),
-(10, 1, 27),
-(11, 1, 28);
+(1, 1, 1);

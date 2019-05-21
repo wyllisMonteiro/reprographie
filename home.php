@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require "bdd.php";
+    require "config/bdd.php";
     
     if(!isset($_SESSION["auth"])) {
         header('Location: ./index.php');
@@ -10,7 +10,9 @@
             FROM user, demand, user_demand
             WHERE user.id = :id
             AND user.id = user_demand.id_user
-            AND demand.id = user_demand.id_demand';
+            AND demand.id = user_demand.id_demand
+            ORDER BY demand.id ASC
+            LIMIT 5';
 
     $sth = $bdd->prepare($sql);
     $sth->execute(array(':id' => $_SESSION["auth"]["id"]));
@@ -26,22 +28,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Historique de mes demandes</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        h1 {
-            text-align: center;  
-            margin-top: 50px;
-        }
-        .demands {
-            width: 50%;
-            margin: 50px auto 0px auto;
-        }
-
-        .demand {
-            margin-top: 20px;
-            padding-bottom: 20px; 
-            border-bottom: solid #007bff 2px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
 
@@ -52,6 +39,9 @@
         <?php
 
             foreach($demands as $key => $demand) {
+                if($demand['agrafage'] == 1) $demand['agrafage'] = "Oui";
+                else $demand['agrafage'] = "Non";
+
                 echo "<div class='demand'>";
                 echo "Date de la demande : " .                              $demand['date_demand'] . "<br>";
                 echo "Date ou les photocopies doivent être prêtes : " .     $demand['date_ready_print'] . "<br>";

@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require "bdd.php";
+    require "config/bdd.php";
 
     $result = "";
 
@@ -59,10 +59,19 @@
         $id_demand = $bdd->lastInsertId();
 
         $sql_demand = 'INSERT INTO reprographie.user_demand (id_user, id_demand) VALUES (:id_user, :id_demand);';
-
         $sth_demand = $bdd->prepare($sql_demand);
-
         $request_demand = $sth_demand->execute(array(':id_user' => $_SESSION["auth"]["id"], ':id_demand' => $id_demand));
+
+        $message =  "Date de la demande : " .                             
+                    "Date ou les photocopies doivent être prêtes : ".
+                    "Nombre d'impressions : ".
+                    "Format : " .                                        
+                    "Orientation : " .                                     
+                    "Agraffage : " .                               
+                    "Commentaires : ";
+
+        // mail($_SESSION['auth']['email'], "Demande de photocopies", $message);
+        header('Location: ./home.php');
 
     }
 
@@ -76,12 +85,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Faire une demande d'impression</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        form{
-            width: 50%;
-            margin: 50px auto 0px auto;
-        }
-    </style>
+    <link rel="stylesheet" href="css/demand.css">
 </head>
 <body>
 
@@ -97,7 +101,7 @@
 
         <div class="form-group">
             <label for="date_ready_print">Date ou les photocopies doivent être prêtes</label>
-            <input type="text" class="form-control"  name="date_ready_print" id="date_ready_print" placeholder="Password">
+            <input type="text" class="form-control"  name="date_ready_print" id="date_ready_print" placeholder="2019-05-05">
         </div>
 
         <div class="form-group">

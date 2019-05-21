@@ -1,0 +1,28 @@
+h1 {
+    text-align: center;  
+    margin-top: 50px;
+}
+.demands {
+    width: 50%;
+    margin: 50px auto 0px auto;
+}
+
+.demand {
+    margin-top: 20px;
+    padding-bottom: 20px; 
+    border-bottom: solid #007bff 2px;
+}
+
+.demand:last-child {
+    margin-top: 20px;
+    padding-bottom: 20px; 
+    border-bottom: none;
+}
+
+.nav-link {
+    border-bottom: 2px solid #f8f9fa;
+}
+
+#home_item {
+    border-bottom: 2px solid #007bff;
+}
